@@ -1,5 +1,5 @@
 Name: kernel-image-@kflavour@
-Release: alt1
+Release: alt0.c9f
 epoch:2
 %define kernel_base_version	5.10
 %define kernel_sublevel .32
@@ -54,7 +54,7 @@ Group: System/Kernel and hardware
 Url: http://www.kernel.org/
 Packager: Kernel Maintainers Team <kernel@packages.altlinux.org>
 
-Patch0: %name-%version-%release.patch
+Source: kernel-image-@kflavour@-%version.tar
 
 %if "%sub_flavour" == "pae"
 ExclusiveArch: i586
@@ -110,7 +110,6 @@ BuildRequires: flex
 BuildRequires: libdb4-devel
 BuildRequires: gcc%kgcc_version gcc%kgcc_version-c++
 BuildRequires: gcc%kgcc_version-plugin-devel libgmp-devel libmpc-devel
-BuildRequires: kernel-source-%kernel_base_version = %kernel_extra_version_numeric
 BuildRequires: module-init-tools >= 3.16
 BuildRequires: lzma-utils zlib-devel
 BuildRequires: libelf-devel
@@ -326,11 +325,7 @@ patches applied to the corresponding kernel packages may change things
 in the kernel and update the documentation to reflect these changes.
 
 %prep
-%setup -cT -n kernel-image-%flavour-%kversion-%krelease
-rm -rf kernel-source-%kernel_base_version
-tar -xf %kernel_src/kernel-source-%kernel_base_version.tar
-%setup -D -T -n kernel-image-%flavour-%kversion-%krelease/kernel-source-%kernel_base_version
-%patch0 -p1
+%setup  -n kernel-image-%flavour-%kversion
 
 
 # this file should be usable both with make and sh (for broken modules
@@ -665,6 +660,9 @@ grep -qE '^(\[ *[0-9]+\.[0-9]+\] *)?reboot: Power down' boot.log || {
 %modules_dir/kernel/drivers/staging/
 
 %changelog
+* Wed Apr 28 2021 Kernel Bot <kernelbot@altlinux.org> 2:5.10.32-alt0.c9f
+- don't relay on kernel-source package in c9
+
 * Fri Apr 23 2021 Kernel Bot <kernelbot@altlinux.org> 2:5.10.32-alt1
 - v5.10.32  (Fixes: CVE-2021-23133)
 

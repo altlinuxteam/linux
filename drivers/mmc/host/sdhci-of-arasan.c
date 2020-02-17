@@ -198,6 +198,20 @@ static const struct sdhci_arasan_soc_ctl_map intel_keembay_soc_ctl_map = {
 	.hiword_update = false,
 };
 
+static const struct sdhci_arasan_soc_ctl_map mcom03_soc_ctl_map[] = {
+	{
+		.baseclkfreq = { .reg = 0x40, .width = 8, .shift = 8 },
+		.clockmultiplier = { .reg = 0, .width = -1, .shift = -1},
+		.hiword_update = false,
+	},
+	{
+		.baseclkfreq = { .reg = 0x7c, .width = 8, .shift = 8 },
+		.clockmultiplier = { .reg = 0, .width = -1, .shift = -1},
+		.hiword_update = false,
+	},
+	{ /* sentinel */ }
+};
+
 /**
  * sdhci_arasan_syscon_write - Write to a field in soc_ctl registers
  *
@@ -1229,6 +1243,12 @@ static struct sdhci_arasan_of_data intel_keembay_sdio_data = {
 	.clk_ops = &arasan_clk_ops,
 };
 
+static struct sdhci_arasan_of_data elvees_mcom03_sdhci_data = {
+	.soc_ctl_map = &mcom03_soc_ctl_map,
+	.pdata = &sdhci_arasan_cqe_pdata,
+	.clk_ops = &arasan_clk_ops,
+};
+
 static const struct of_device_id sdhci_arasan_of_match[] = {
 	/* SoC-specific compatible strings w/ soc_ctl_map */
 	{
@@ -1254,6 +1274,10 @@ static const struct of_device_id sdhci_arasan_of_match[] = {
 	{
 		.compatible = "intel,keembay-sdhci-5.1-sdio",
 		.data = &intel_keembay_sdio_data,
+	},
+	{
+		.compatible = "elvees,mcom03-sdhci-8.9a",
+		.data = &elvees_mcom03_sdhci_data,
 	},
 	/* Generic compatible below here */
 	{
@@ -1532,6 +1556,7 @@ cleanup:
 static int sdhci_arasan_probe(struct platform_device *pdev)
 {
 	int ret;
+	int ctrl_id;
 	const struct of_device_id *match;
 	struct device_node *node;
 	struct clk *clk_xin;
@@ -1615,6 +1640,17 @@ static int sdhci_arasan_probe(struct platform_device *pdev)
 		sdhci_arasan_update_support64b(host, 0x0);
 
 		host->mmc->caps |= MMC_CAP_WAIT_WHILE_BUSY;
+	}
+
+	/* Set proper soc_ctl_map for MCom-03 */
+	if (of_device_is_compatible(pdev->dev.of_node,
+				    "elvees,mcom03-sdhci-8.9a")) {
+		ret = device_property_read_u32(&pdev->dev, "elvees,ctrl-id",
+					       &ctrl_id);
+		if (ret)
+			goto clk_disable_all;
+
+		sdhci_arasan->soc_ctl_map = &mcom03_soc_ctl_map[ctrl_id];
 	}
 
 	sdhci_arasan_update_baseclkfreq(host);

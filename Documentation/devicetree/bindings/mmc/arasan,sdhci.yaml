@@ -37,6 +37,15 @@ allOf:
             - items:
                 - const: clk_out_sd1
                 - const: clk_in_sd1
+  - if:
+      properties:
+        compatible:
+          contains:
+            const: elvees,mcom03-sdhci-8.9a
+    then:
+      required:
+        - resets
+        - elvees,ctrl-id
 
 properties:
   compatible:
@@ -88,6 +97,12 @@ properties:
         description:
           For this device it is strongly suggested to include
           arasan,soc-ctl-syscon.
+      - items:
+          - const: elvees,mcom03-sdhci-8.9a     # Elvees SDHCI 8.9a PHY
+          - const: arasan,sdhci-8.9a
+        description:
+          For this device it is strongly suggested to include
+          arasan,soc-ctl-syscon.
 
   reg:
     maxItems: 1
@@ -111,6 +126,17 @@ properties:
 
   phy-names:
     const: phy_arasan
+
+  resets:
+    maxItems: 1
+    description:
+      Handle to reset input.
+
+  elvees,ctrl-id:
+    maxItems: 1
+    enum: [0, 1]
+    description:
+      ID of SDHCI controller.
 
   arasan,soc-ctl-syscon:
     $ref: /schemas/types.yaml#/definitions/phandle
@@ -151,6 +177,11 @@ properties:
     default: 0
     description:
       The MIO bank number in which the command and data lines are configured.
+
+  elvees,broken-hs:
+    $ref: /schemas/types.yaml#/definitions/flag
+    description:
+      When present, denotes that HS mode is not supported.
 
 dependencies:
   clock-output-names: [ '#clock-cells' ]

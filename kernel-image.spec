@@ -1,5 +1,5 @@
 Name: kernel-image-@kflavour@
-Release: alt0.c9f
+Release: alt0.c9f.1
 epoch:2
 %define kernel_base_version	5.10
 %define kernel_sublevel .68
@@ -681,6 +681,9 @@ grep -qE '^(\[ *[0-9]+\.[0-9]+\] *)?reboot: Power down' boot.log || {
 %modules_dir/kernel/drivers/staging/
 
 %changelog
+* Fri Sep 24 2021 Kernel Bot <kernelbot@altlinux.org> 2:5.10.68-alt0.c9f.1
+- two patches for Baikal-M added
+
 * Thu Sep 23 2021 Kernel Bot <kernelbot@altlinux.org> 2:5.10.68-alt0.c9f
 - v5.10.68  (Fixes: CVE-2017-6074, CVE-2020-16119)
 

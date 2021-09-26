@@ -2,7 +2,7 @@ Name: kernel-image-@kflavour@
 Release: alt0.c9f.1
 epoch:2
 %define kernel_base_version	5.10
-%define kernel_sublevel .68
+%define kernel_sublevel .69
 %define kernel_extra_version	%nil
 Version: %kernel_base_version%kernel_sublevel%kernel_extra_version
 # Numeric extra version scheme developed by Alexander Bokovoy:
@@ -681,6 +681,9 @@ grep -qE '^(\[ *[0-9]+\.[0-9]+\] *)?reboot: Power down' boot.log || {
 %modules_dir/kernel/drivers/staging/
 
 %changelog
+* Sun Sep 26 2021 Kernel Bot <kernelbot@altlinux.org> 2:5.10.69-alt0.c9f.1
+- v5.10.69
+
 * Fri Sep 24 2021 Kernel Bot <kernelbot@altlinux.org> 2:5.10.68-alt0.c9f.1
 - two patches for Baikal-M added
 

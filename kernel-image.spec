@@ -2,7 +2,7 @@ Name: kernel-image-@kflavour@
 Release: alt0.c9f.1
 epoch:2
 %define kernel_base_version	5.10
-%define kernel_sublevel .70
+%define kernel_sublevel .71
 %define kernel_extra_version	%nil
 Version: %kernel_base_version%kernel_sublevel%kernel_extra_version
 # Numeric extra version scheme developed by Alexander Bokovoy:
@@ -684,6 +684,9 @@ grep -qE '^(\[ *[0-9]+\.[0-9]+\] *)?reboot: Power down' boot.log || {
 %modules_dir/kernel/drivers/staging/
 
 %changelog
+* Wed Oct 06 2021 Kernel Bot <kernelbot@altlinux.org> 2:5.10.71-alt0.c9f.1
+- v5.10.71  (Fixes: CVE-2021-3653, CVE-2021-3656)
+
 * Thu Sep 30 2021 Kernel Bot <kernelbot@altlinux.org> 2:5.10.70-alt0.c9f.1
 - v5.10.70
 

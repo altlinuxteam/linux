@@ -1248,6 +1248,10 @@ static const struct of_device_id sdhci_arasan_of_match[] = {
 		.compatible = "xlnx,versal-8.9a",
 		.data = &sdhci_arasan_versal_data,
 	},
+	{
+		.compatible = "elvees,mcom03-sdhci-8.9a",
+		.data = &sdhci_arasan_versal_data,
+	},
 	{ /* sentinel */ }
 };
 MODULE_DEVICE_TABLE(of, sdhci_arasan_of_match);

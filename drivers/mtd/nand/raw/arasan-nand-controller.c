@@ -1299,6 +1299,7 @@ static const struct of_device_id anfc_ids[] = {
 	},
 	{
 		.compatible = "arasan,nfc-v3p10",
+		.compatible = "arasan,nfc-v3p16",
 	},
 	{}
 };
